@@ -26,16 +26,7 @@ conda create --name environment_name python=3.6 --file environment.yml
 ```
 python3.6 -m venv environment_name
 ```
-2. Activate the environment
-#On Linux/Mac:
-```
-source environment_name/bin/activate
-```
-#On Windows:
-```
-environment_name\Scripts\activate
-```
-3. Install packages from requirements file
+2. Install packages from requirements file
 ```
 pip install -r requirements.txt
 ```
