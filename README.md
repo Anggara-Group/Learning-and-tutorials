@@ -22,21 +22,20 @@ conda create --name environment_name python=3.6 --file environment.yml
 
 #### Using venv (Built into Python 3.3+)
 
-Create virtual environment with Python 3.6
+1. Create virtual environment with Python 3.6
 ```
 python3.6 -m venv environment_name
 ```
-
-# Activate the environment
-# On Linux/Mac:
+2. Activate the environment
+    On Linux/Mac:
 ```
 source environment_name/bin/activate
 ```
-# On Windows:
+On Windows:
 ```
 environment_name\Scripts\activate
 ```
-# Install packages from requirements file
+3. Install packages from requirements file
 ```
 pip install -r requirements.txt
 ```
