@@ -27,11 +27,11 @@ conda create --name environment_name python=3.6 --file environment.yml
 python3.6 -m venv environment_name
 ```
 2. Activate the environment
-    On Linux/Mac:
+#On Linux/Mac:
 ```
 source environment_name/bin/activate
 ```
-On Windows:
+#On Windows:
 ```
 environment_name\Scripts\activate
 ```
@@ -39,5 +39,11 @@ environment_name\Scripts\activate
 ```
 pip install -r requirements.txt
 ```
+### Getting Started
 
+1. Clone this repository
+2. Create and activate a Python virtual environment (see Installation section)
+3. Install dependencies (requierements)
+4. Navigate to the `tutorials/` directory
+5. Start with the basic notebooks (ipynb)
 
