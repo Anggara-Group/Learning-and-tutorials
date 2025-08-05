@@ -9,9 +9,9 @@ It serves as a testing ground for experimenting with different libraries, algori
 ## Workflow and repository structure
 ![](workflow.png)
 
-S1. Image analysis, basic load of SXM files, feature analysis and clustering.
-S2. Chitosan project solving image to binary sequence.
-S3. Virgil project solving image to ball and sticks.
+#S1. Image analysis, basic load of SXM files, feature analysis and clustering.
+#S2. Chitosan project solving image to binary sequence.
+#S3. Virgil project solving image to ball and sticks.
 
 ## 1. Installation and Dependencies
 
