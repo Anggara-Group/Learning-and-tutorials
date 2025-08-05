@@ -321,11 +321,6 @@ def visualize_cluster_centroids(img, cluster_info, radius, color=(0, 255, 255), 
     
     return img_centroids
 
-# Example usage (assuming you have cluster_info from analyze_circle_clusters):
-# cluster_info, labels = analyze_circle_clusters(circles)
-# img_with_centroids = visualize_cluster_centroids(binary_small, cluster_info)
-
-# Display the result
 def show_centroid_visualization(img, cluster_info,radius=150):
     """
     Complete function to create and display centroid visualization

@@ -26,7 +26,6 @@ from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
 import cv2
-cv=cv2
 
 import numpy as np
 from scipy.stats import entropy
@@ -658,7 +657,6 @@ def run_cluster_filter_analysis(additional_features, names, clusters):
     
     return df, cluster_strategies, cluster_stats, percentiles
 
-
 def apply_recommended_filters(image_name, strategy, image_data):
     """
     Apply the recommended filters to an image
@@ -673,8 +671,6 @@ def apply_recommended_filters(image_name, strategy, image_data):
     # processed_image = apply_gaussian(image_data) # etc.
     
     return pipeline
-
-
 
 def get_cluster_processing_pipeline(cluster_id, cluster_strategies):
     """
@@ -1072,4 +1068,4 @@ def analyze_backbone_measurements(backbone_points, name, pixelsize):
     
     return results
 
-# Updated main processing code
+
