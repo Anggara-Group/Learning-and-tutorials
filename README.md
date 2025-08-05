@@ -7,7 +7,7 @@ Tutorials and testing area for our projects.
 It serves as a testing ground for experimenting with different libraries, algorithms, and techniques.
 
 ## Workflow and repository structure
-![](workflow.pdf)
+![](workflow.png)
 
 S1. Image analysis, basic load of SXM files, feature analysis and clustering.
 S2. Chitosan project solving image to binary sequence.
