@@ -1,0 +1,11 @@
+{
+  "input_paths": {
+    "general_path": "y://DATA//STM//STM_DATA//"
+  },
+  "output_paths": {
+    "saving_path": "Z:/Results/Batch_processing"
+  },
+  "info_folder": {
+  "info_path":"(NKN)2//20250706_LHe_Ag111"
+  }
+}
