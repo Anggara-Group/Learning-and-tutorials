@@ -51,7 +51,6 @@ pip install -r requirements.txt
 
 1. Clone this repository
 2. Create and activate a Python virtual environment (see Installation section)
-3. Install dependencies (requierements)
-4. Navigate to the `tutorials/` directory
-5. Start with the basic notebooks (ipynb)
+3. Install dependencies (requierements of each project)
+4. Start with the basic notebooks (ipynb)
 
