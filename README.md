@@ -6,6 +6,13 @@ Tutorials and testing area for our projects.
 
 It serves as a testing ground for experimenting with different libraries, algorithms, and techniques.
 
+## Workflow and repository structure
+![](workflow.pdf)
+
+S1. Image analysis, basic load of SXM files, feature analysis and clustering.
+S2. Chitosan project solving image to binary sequence.
+S3. Virgil project solving image to ball and sticks.
+
 ## 1. Installation and Dependencies
 
 Here you will find instructions for creating conda or python environments. Please note that conda is no longer supported at the Max Planck Institute, so please use free distributions (Miniconda) or Python virtual environments.
