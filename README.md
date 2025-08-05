@@ -1,2 +1,44 @@
 # Learning-and-tutorials
-Tutorials and testing area
+
+Tutorials and testing area for our projects.
+
+## Description
+
+It serves as a testing ground for experimenting with different libraries, algorithms, and techniques.
+
+## 1. Installation and Dependencies
+
+Here you will find instructions for creating conda or python environments. Please note that conda is no longer supported at the Max Planck Institute, so please use free distributions (Miniconda) or Python virtual environments.
+
+### Conda Environment (Legacy - Not Recommended)
+
+⚠️ **Note**: Conda is no longer supported at Max Planck Institute. Use Python virtual environments instead.
+
+For reference only:
+```
+conda create --name environment_name python=3.6 --file environment.yml
+```
+### Python Virtual Environment (Recommended)
+
+#### Using venv (Built into Python 3.3+)
+
+Create virtual environment with Python 3.6
+```
+python3.6 -m venv environment_name
+```
+
+# Activate the environment
+# On Linux/Mac:
+```
+source environment_name/bin/activate
+```
+# On Windows:
+```
+environment_name\Scripts\activate
+```
+# Install packages from requirements file
+```
+pip install -r requirements.txt
+```
+
+
