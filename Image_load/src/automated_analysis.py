@@ -1,37 +1,34 @@
-from src.sxm_loader import *
-import matplotlib.pyplot as plt
+# Core libraries
+import os
+import numpy as np
+import pandas as pd
+import cv2
 from PIL import Image
-import numpy as np
-import matplotlib.pyplot as plt
-import numpy as np
-from skimage.io import imread, imshow
 
-from skimage import data
+# Matplotlib
+import matplotlib.pyplot as plt
+
+# Scikit-image
+from skimage.io import imread
 from skimage.util import img_as_ubyte
 from skimage.filters.rank import entropy
 from skimage.morphology import disk
 from skimage.color import rgb2hsv, rgb2gray, rgb2yuv
-import cv2
-import numpy as np
-from scipy.stats import entropy
-from src.filters import *
-from src.display_functions import *
-import os
-from src.automated_analysis import *
 
-import numpy as np
+# Scipy
+from scipy.stats import entropy
+
+# Scikit-learn
 from sklearn.decomposition import PCA
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
-import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
-import cv2
 
-import numpy as np
-from scipy.stats import entropy
-
-import numpy as np
-import pandas as pd
+# Local modules
+from src.sxm_loader import *
+from src.filters import *
+from src.display_functions import *
+from src.automated_analysis import *
 
 
 def calculate_entropy_from_array(image_array, bins=256):
@@ -159,73 +156,6 @@ def calculate_kurtosis(data):
         return 0
     return np.mean(((data - mean_val) / std_val) ** 4) - 3
 
-def extract_features_from_dict(data_dict, target_size=(128, 128)):
-    """Extract comprehensive image features"""
-    feature_dict = {}
-    image_features=[]
-    names = list(data_dict.keys())   
-    for name in names:
-        # Process image
-        img = data_dict[name]['img']
-        if len(img.shape) == 2:  # Grayscale
-            resized = cv2.resize(img, target_size)
-            gray = img.copy()
-        else:  # Color
-            resized = cv2.resize(img, target_size)
-            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-       
-        image_features.append(resized.flatten())
-        
-        # Original features
-        bias = data_dict[name]['bias']
-        acq_time = data_dict[name]['acq_time']
-        
-        # Intensity features
-        max_int = np.max(img)
-        min_int = np.min(img)
-        intensity_range = max_int - min_int
-        mean_intensity = np.mean(img)
-        std_intensity = np.std(img)
-        
-        # Edge features
-        edge_density = calculate_edge_density_from_array(img)
-        
-        # Object counting features
-        num_contours = count_objects_contours(gray)
-        
-        # Texture features
-        contrast = calculate_contrast(gray)
-        homogeneity = calculate_homogeneity(gray)
-        
-        # Shape/structure features
-        laplacian_variance = calculate_sharpness(gray)
-        gradient_magnitude = calculate_gradient_strength(gray)
-        
-        # Frequency domain features
-        freq_energy_high, freq_energy_low = calculate_frequency_features(gray)
-        
-        feature_dict[name] = {
-            'flattened_image': resized.flatten(),
-            'bias': bias,
-            'entropy': entropy,
-            'acq_time': acq_time,
-            'intensity_range': intensity_range,
-            'mean_intensity': mean_intensity,
-            'std_intensity': std_intensity,
-            'edge_density': edge_density,
-            'num_contours': num_contours,
-            'contrast': contrast,
-            'homogeneity': homogeneity,
-            'laplacian_variance': laplacian_variance,
-            'gradient_magnitude': gradient_magnitude,
-            'freq_energy_high': freq_energy_high,
-            'freq_energy_low': freq_energy_low
-        }
-    
-   
-    return feature_dict
-
-# Keep only the contour-based object counting
 def count_objects_contours(gray_img, min_area=50):
     """Count objects using contour detection"""
     # Convert to uint8 if needed
