@@ -33,6 +33,7 @@ from scipy.stats import entropy
 import numpy as np
 import pandas as pd
 
+
 def calculate_entropy_from_array(image_array, bins=256):
     """Calculate entropy directly from numpy array"""
     # Calculate histogram
@@ -45,6 +46,118 @@ def calculate_entropy_from_array(image_array, bins=256):
     image_entropy = entropy(prob_dist, base=2)
     
     return image_entropy
+
+def extract_features_to_dataframe(data_dict, target_size=(128, 128), include_image_pixels=False):
+    """
+    Extract image features and return as pandas DataFrame
+    
+    Parameters:
+    -----------
+    data_dict : dict
+        Dictionary containing image data and metadata
+    target_size : tuple
+        Target size for image resizing (height, width)
+    include_image_pixels : bool
+        Whether to include flattened image pixels as features (can be very large)
+    
+    Returns:
+    --------
+    pd.DataFrame
+        DataFrame with samples as rows and features as columns
+    """
+    
+    names = list(data_dict.keys())
+    all_data = []
+    
+    for name in names:
+        # Process image
+        img = data_dict[name]['img']
+        if len(img.shape) == 2:  # Grayscale
+            resized = cv2.resize(img, target_size)
+            gray = img.copy()
+        else:  # Color
+            resized = cv2.resize(img, target_size)
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        
+        # Start building feature dictionary for this sample
+        feature_dict = {'sample_name': name}
+        
+        # Original metadata features
+        feature_dict['bias'] = data_dict[name]['bias']
+        feature_dict['acq_time'] = data_dict[name]['acq_time']
+        
+        # Intensity features
+        feature_dict['max_intensity'] = np.max(img)
+        feature_dict['min_intensity'] = np.min(img)
+        feature_dict['intensity_range'] = feature_dict['max_intensity'] - feature_dict['min_intensity']
+        feature_dict['mean_intensity'] = np.mean(img)
+        feature_dict['intensity_skewness'] = calculate_skewness(img.flatten())
+        feature_dict['intensity_kurtosis'] = calculate_kurtosis(img.flatten())
+
+        #Entropy
+        feature_dict['entropy']=calculate_entropy_from_array(img)
+        
+        # Edge features
+        feature_dict['edge_density'] = calculate_edge_density_from_array(img)
+        
+        # Object counting features
+        feature_dict['num_contours'] = count_objects_contours(gray)
+        
+        # Texture features
+        feature_dict['contrast'] = calculate_contrast(gray)
+        feature_dict['homogeneity'] = calculate_homogeneity(gray)
+        
+        # Shape/structure features
+        feature_dict['laplacian_variance'] = calculate_sharpness(gray)
+        feature_dict['gradient_magnitude'] = calculate_gradient_strength(gray)
+        
+        # Frequency domain features
+        freq_high, freq_low = calculate_frequency_features(gray)
+        feature_dict['freq_energy_high'] = freq_high
+        feature_dict['freq_energy_low'] = freq_low
+        feature_dict['freq_ratio_high_low'] = freq_high / (freq_low + 1e-8)  # Avoid division by zero
+
+        
+        # Image shape features
+        feature_dict['image_height'] = img.shape[0]
+        feature_dict['image_width'] = img.shape[1]
+        feature_dict['image_aspect_ratio'] = img.shape[1] / img.shape[0]
+        feature_dict['image_area'] = img.shape[0] * img.shape[1]
+        
+        # Add flattened image pixels if requested (warning: can be very large!)
+        if include_image_pixels:
+            flattened_pixels = resized.flatten()
+            for i, pixel_val in enumerate(flattened_pixels):
+                feature_dict[f'pixel_{i}'] = pixel_val
+        
+        all_data.append(feature_dict)
+    
+    # Create DataFrame
+    df = pd.DataFrame(all_data)
+    
+    # Set sample_name as index
+    df.set_index('sample_name', inplace=True)
+    
+    print(f"\nDataFrame created with shape: {df.shape}")
+    print(f"Features: {list(df.columns)}")
+    
+    return df
+
+def calculate_skewness(data):
+    """Calculate skewness of data"""
+    mean_val = np.mean(data)
+    std_val = np.std(data)
+    if std_val == 0:
+        return 0
+    return np.mean(((data - mean_val) / std_val) ** 3)
+
+def calculate_kurtosis(data):
+    """Calculate kurtosis of data"""
+    mean_val = np.mean(data)
+    std_val = np.std(data)
+    if std_val == 0:
+        return 0
+    return np.mean(((data - mean_val) / std_val) ** 4) - 3
 
 def extract_features_from_dict(data_dict, target_size=(128, 128)):
     """Extract comprehensive image features"""
@@ -65,7 +178,6 @@ def extract_features_from_dict(data_dict, target_size=(128, 128)):
         
         # Original features
         bias = data_dict[name]['bias']
-        entropy = data_dict[name]['entropy']
         acq_time = data_dict[name]['acq_time']
         
         # Intensity features

@@ -1,3 +1,4 @@
+import json 
 # Load the JSON configuration file
 def load_paths(config_file='paths.json'):
     """Load path configuration from JSON file"""
