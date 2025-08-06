@@ -442,7 +442,7 @@ def analyze_clusters(feature_frame, clusters):
     # Calculate overall percentiles for reference
     
     percentiles = {}
-    for col in feature_names:
+    for col in feature_keys:
         percentiles[col] = {
             'low': np.percentile(df[col], 33),
             'high': np.percentile(df[col], 67)
@@ -457,7 +457,7 @@ def analyze_clusters(feature_frame, clusters):
         
         # Calculate mean, std, and other stats for each feature
         stats = {}
-        for feature in feature_names:
+        for feature in feature_keys:
             stats[feature] = {
                 'mean': cluster_data[feature].mean(),
                 'std': cluster_data[feature].std(),
@@ -569,7 +569,7 @@ def generate_all_cluster_configs(cluster_stats, global_percentiles):
     
     return cluster_configs
 
-def run_cluster_config_analysis(feature_frame, names, clusters):
+def run_cluster_config_analysis(feature_frame,  clusters):
 
     # Analyze by clusters
     df, cluster_stats, percentiles, unique_clusters = analyze_clusters(feature_frame, clusters)
