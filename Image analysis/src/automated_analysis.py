@@ -88,6 +88,7 @@ def extract_features_to_dataframe(data_dict, target_size=(128, 128), include_ima
         feature_dict['min_intensity'] = np.min(img)
         feature_dict['intensity_range'] = feature_dict['max_intensity'] - feature_dict['min_intensity']
         feature_dict['mean_intensity'] = np.mean(img)
+        feature_dict['std_intensity'] = np.std(img)
         feature_dict['intensity_skewness'] = calculate_skewness(img.flatten())
         feature_dict['intensity_kurtosis'] = calculate_kurtosis(img.flatten())
 
@@ -423,23 +424,24 @@ def get_processing_pipeline(image_name, strategy):
     
     return high_priority
 
-def analyze_clusters(additional_features, names, clusters):
+def analyze_clusters(feature_frame, clusters):
     """
     Analyze image characteristics by cluster and recommend filters per cluster
     """
-    
-    # Create DataFrame for easier analysis
-    feature_names = [
-        'bias', 'entropy', 'acq_time', 'intensity_range', 'mean_intensity', 
-        'std_intensity', 'edge_density', 'num_contours', 'contrast', 
-        'homogeneity', 'laplacian_variance', 'gradient_magnitude', 
+    feature_keys = [
+        'bias', 'entropy', 'acq_time',
+        'intensity_range', 'mean_intensity', 'std_intensity',
+        'edge_density', 'num_contours', 'contrast', 'homogeneity',
+        'laplacian_variance', 'gradient_magnitude',
         'freq_energy_high', 'freq_energy_low'
     ]
     
-    df = pd.DataFrame(additional_features, columns=feature_names, index=names)
+    df = feature_frame[feature_keys].copy()
     df['cluster'] = clusters
     
     # Calculate overall percentiles for reference
+    
+    
     percentiles = {}
     for col in feature_names:
         percentiles[col] = {
@@ -578,36 +580,13 @@ def run_cluster_config_analysis(additional_features, names, clusters):
     # Generate filter configurations
     cluster_configs = generate_all_cluster_configs(cluster_stats, percentiles)
     
-    print(" CLUSTER FILTER CONFIGURATIONS")
-    print("="*60)
-    
     for cluster_id in unique_clusters:
         cluster_data = df[df['cluster'] == cluster_id]
         config_name = f'cluster_{cluster_id}_filters'
         config = cluster_configs[config_name]
         
-        # Print cluster analysis
-        print(f"\n CLUSTER {cluster_id} ({cluster_stats[cluster_id]['bias']['count']} images)")
-        print("=" * 40)
-        
-        # Key statistics
-        stats = cluster_stats[cluster_id]
-        print(f" Characteristics:")
-        print(f"   Edge: {stats['edge_density']['mean']:.3f}, Contrast: {stats['contrast']['mean']:.3f}")
-        print(f"   Sharpness: {stats['laplacian_variance']['mean']:.1f}, Objects: {stats['num_contours']['mean']:.1f}")
-        
-        # Print configuration
-        print(f"\n⚙️  Filter Configuration:")
-        print(f"cluster_{cluster_id}_filters = {{")
-        print(f"    'fft_filter': {config['fft_filter']},")
-        print(f"    'unsharp_mask': {config['unsharp_mask']},")
-        print(f"    'invert': {config['invert']},")
-        print(f"    'cosine': {config['cosine']},")
-        print(f"    'blur_sigma': {config['blur_sigma']}")
-        print(f"}}")
-        
         # Reasoning
-        print(f"\n💡 Reasoning:")
+        print(f"Reasoning:")
         fft_type = config['fft_filter']['type']
         if fft_type == 'gaussian':
             print(f"   FFT Gaussian: Noise reduction/smoothing")
@@ -626,10 +605,6 @@ def run_cluster_config_analysis(additional_features, names, clusters):
         
         if config['invert']:
             print(f"   Invert: Very low contrast/edge content")
-        
-        # Sample images
-        sample_images = cluster_data.index[:3].tolist()
-        print(f"\n📸 Sample Images: {', '.join(sample_images)}")
     
     return cluster_configs, df, cluster_stats
 
