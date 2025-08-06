@@ -2,6 +2,7 @@ import os
 import matplotlib.pyplot as plt
 import pickle
 import numpy as np
+import cv2
 
 def display_plot(created_image, title, raw_image=False):
     """
