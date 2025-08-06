@@ -18,13 +18,12 @@ This pipeline processes .sxm files through several analysis stages:
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd stm-analysis-pipeline
    ```
 
-2. **Create a virtual environment**
+2. **Create a virtual environment (your-name is of your own choice)**
    ```bash
-   python -m venv stm-analysis
-   source stm-analysis/bin/activate  # On Windows: stm-analysis\Scripts\activate
+   python -m venv your-name
+   source your-name/bin/activate  # On Windows: stm-analysis\Scripts\activate
    ```
 
 3. **Install dependencies**
@@ -53,9 +52,9 @@ The pipeline uses a `paths.json` file to manage data locations. Create this file
 ```
 
 **Important**: Update these paths to match your system:
-- `base_data`: Where your STM data files (.sxm) are stored
-- `results`: Where you want processed results saved
-- `current_experiment`: Specific experiment folder within base_data
+- `input_paths`: Where your STM data files (.sxm) are stored
+- `output_paths`: Where you want processed results saved
+- `info_folder`: Specific experiment folder within base_data
 
 
 
@@ -71,7 +70,7 @@ The pipeline uses a `paths.json` file to manage data locations. Create this file
 
 
 3. **Check results**
-   - Results will be saved in `results/current_experiment/`
+   - Results will be saved in your desired destination
    - Each cluster gets its own folder with visualizations
 
 ### Output Structure
@@ -104,9 +103,7 @@ results/current_experiment/
 ## Key Features
 
 ### Automated Clustering
-- Uses Gaussian Mixture Models to automatically group similar STM images
-- Optimizes cluster number using AIC/BIC criteria
-- Applies different processing parameters to each cluster
+- Uses Gaussian Mixture Models 
 
 ### Image Processing
 - Automatic plane correction and drift compensation
