@@ -3,33 +3,19 @@ import os
 import numpy as np
 import pandas as pd
 import cv2
-from PIL import Image
 
 # Matplotlib
 import matplotlib.pyplot as plt
 
-# Scikit-image
 from skimage.io import imread
 from skimage.util import img_as_ubyte
 from skimage.filters.rank import entropy
 from skimage.morphology import disk
 from skimage.color import rgb2hsv, rgb2gray, rgb2yuv
 
-# Scipy
 from scipy.stats import entropy
 
-# Scikit-learn
-from sklearn.decomposition import PCA
-from sklearn.cluster import KMeans
-from sklearn.preprocessing import StandardScaler
-from sklearn.manifold import TSNE
-
-# Local modules
-from src.sxm_loader import *
-from src.filters import *
-from src.display_functions import *
-from src.automated_analysis import *
-
+from src.filters import*
 
 def calculate_entropy_from_array(image_array, bins=256):
     """Calculate entropy directly from numpy array"""
@@ -842,8 +828,6 @@ def remove_background_outside_edges(img, gauss=False, sensitivity='medium'):
    
     return results
 
-
-
 def get_distance_transform(img, mask, name):
     """
     Simple distance transform using existing mask
@@ -861,23 +845,15 @@ def get_distance_transform(img, mask, name):
     --------
     numpy.ndarray : Distance transform array
     """
-    print(f"🔍 Distance Transform for: {name}")
-    
+   
     # Apply distance transform directly to your existing mask
     dist_transform = cv2.distanceTransform(mask, cv2.DIST_L2, 5)
     
-    # Print basic info
-    print(f"   Shape: {dist_transform.shape}")
-    print(f"   Max distance: {dist_transform.max():.2f} pixels")
-    print(f"   Non-zero pixels: {np.sum(dist_transform > 0)}")
-    
     return dist_transform
-
-
 
 def extract_backbone_from_distance_transform(img, distance_transform, name, method='ridge'):
     """
-    Extract chitosan backbone directly from distance transform
+    Extract backbone directly from distance transform
     
     Parameters:
     -----------
@@ -894,7 +870,6 @@ def extract_backbone_from_distance_transform(img, distance_transform, name, meth
     --------
     dict : Contains backbone coordinates and visualization
     """
-    print(f"🧬 Extracting backbone from distance transform: {name}")
     
     # Convert image to uint8 for visualization
     if img.dtype != np.uint8:
@@ -999,9 +974,6 @@ def extract_backbone_from_distance_transform(img, distance_transform, name, meth
         'visualization': result_img,
         'distance_transform_used': distance_transform
     }
-    
-    print(f"   Backbone length: {backbone_length:.1f} pixels")
-    print(f"   Distance transform max: {distance_transform.max():.1f}")
     
     return results
 
