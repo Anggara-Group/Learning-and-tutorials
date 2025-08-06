@@ -23,7 +23,7 @@ This pipeline processes .sxm files through several analysis stages:
 2. **Create a virtual environment (your-name is of your own choice)**
    ```bash
    python -m venv your-name
-   source your-name/bin/activate  # On Windows: stm-analysis\Scripts\activate
+   your-name\Scripts\activate.bat
    ```
 
 3. **Install dependencies**
