@@ -441,7 +441,6 @@ def analyze_clusters(feature_frame, clusters):
     
     # Calculate overall percentiles for reference
     
-    
     percentiles = {}
     for col in feature_names:
         percentiles[col] = {
@@ -570,12 +569,10 @@ def generate_all_cluster_configs(cluster_stats, global_percentiles):
     
     return cluster_configs
 
-def run_cluster_config_analysis(additional_features, names, clusters):
-    """
-    Complete cluster-based analysis that outputs filter configuration dictionaries
-    """
+def run_cluster_config_analysis(feature_frame, names, clusters):
+
     # Analyze by clusters
-    df, cluster_stats, percentiles, unique_clusters = analyze_clusters(additional_features, names, clusters)
+    df, cluster_stats, percentiles, unique_clusters = analyze_clusters(feature_frame, clusters)
     
     # Generate filter configurations
     cluster_configs = generate_all_cluster_configs(cluster_stats, percentiles)
@@ -630,7 +627,7 @@ def run_cluster_filter_analysis(additional_features, names, clusters):
     Complete cluster-based analysis and recommendation system
     """
     # Analyze by clusters
-    df, cluster_stats, percentiles, unique_clusters = analyze_clusters(additional_features, names, clusters)
+    df, cluster_stats, percentiles, unique_clusters = analyze_clusters(feature_frame, clusters)
     
     print(" CLUSTER-BASED FILTER RECOMMENDATIONS")
     print("="*60)
