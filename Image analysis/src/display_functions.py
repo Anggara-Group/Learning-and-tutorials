@@ -1,6 +1,7 @@
 import os
 import matplotlib.pyplot as plt
 import pickle
+import numpy as np
 
 def display_plot(created_image, title, raw_image=False):
     """
