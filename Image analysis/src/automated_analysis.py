@@ -7,15 +7,12 @@ import cv2
 # Matplotlib
 import matplotlib.pyplot as plt
 
+# Scikit-image
 from skimage.io import imread
 from skimage.util import img_as_ubyte
-from skimage.filters.rank import entropy
-from skimage.morphology import disk
-from skimage.color import rgb2hsv, rgb2gray, rgb2yuv
 
+# Scipy
 from scipy.stats import entropy
-
-from src.filters import*
 
 def calculate_entropy_from_array(image_array, bins=256):
     """Calculate entropy directly from numpy array"""
