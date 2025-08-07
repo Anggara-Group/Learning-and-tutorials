@@ -1,0 +1,1 @@
+This folder will be used for testing GitHub actions with more than one contributer.
